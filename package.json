@@ -1,0 +1,13 @@
+{
+  "name": "tarefa_lista_atv_ppdm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start-backend": "node Back/server.js",
+    "start-frontend": "cd frontend-tarefas && npm install && npx expo start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

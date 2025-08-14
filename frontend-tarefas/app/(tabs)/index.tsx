@@ -101,75 +101,19 @@ export default function HomeScreen() {
 }
 
 // --- Estilos ---
-
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#f4f4f8', // Cor de fundo mais suave
-    },
-    innerContainer: {
-        flex: 1,
-        paddingHorizontal: 20,
-    },
-    title: {
-        fontSize: 32,
-        fontWeight: 'bold',
-        color: '#1d1d1d',
-        marginTop: 20,
-        marginBottom: 20,
-    },
-    inputContainer: {
-        flexDirection: 'row',
-        marginBottom: 20,
-    },
-    input: {
-        flex: 1,
-        backgroundColor: '#fff',
-        paddingHorizontal: 15,
-        paddingVertical: 12,
-        borderRadius: 12, // Bordas mais arredondadas
-        fontSize: 16,
-        marginRight: 10,
-        borderWidth: 1,
-        borderColor: '#e0e0e0',
-    },
-    addButton: {
-        width: 50,
-        height: 50,
-        backgroundColor: '#4a90e2', // Azul moderno
-        borderRadius: 25, // Totalmente redondo
-        justifyContent: 'center',
-        alignItems: 'center',
-        elevation: 3, // Sombra para Android
-    },
-    addButtonText: {
-        color: '#fff',
-        fontSize: 24,
-        fontWeight: 'bold',
-    },
-    taskItem: {
-        backgroundColor: '#fff',
-        padding: 20,
-        borderRadius: 12,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 10,
-        elevation: 2,
-    },
+    container: { flex: 1, paddingTop: 20, paddingHorizontal: 20, backgroundColor: '#f0f0f0' },
+    title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
+    inputContainer: { flexDirection: 'row', marginBottom: 20 },
+    input: { flex: 1, borderWidth: 1, borderColor: '#ccc', padding: 10, marginRight: 10, borderRadius: 5, backgroundColor: '#fff' },
+    taskItem: { backgroundColor: '#fff', padding: 15, borderRadius: 5, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10, elevation: 2 },
     taskText: {
-        fontSize: 16,
-        color: '#333',
+      fontSize: 16,
     },
     taskTextDone: {
-        textDecorationLine: 'line-through',
-        color: '#b0b0b0' // Cor mais suave para itens concluídos
+      textDecorationLine: 'line-through',
+      color: '#aaa'
     },
-    deleteButton: {
-        padding: 5,
-    },
-    deleteButtonText: {
-        fontSize: 20, // Emoji de lixeira
-    }
+    deleteButton: { backgroundColor: 'red', paddingHorizontal: 12, paddingVertical: 5, borderRadius: 5 },
+    deleteButtonText: { color: 'white', fontWeight: 'bold' }
 });
-x

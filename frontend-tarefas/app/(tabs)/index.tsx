@@ -5,7 +5,7 @@ import { StyleSheet, Text, View, TextInput, Button, FlatList, TouchableOpacity, 
 import axios from 'axios';
 
 // A URL base da API do seu colega
-const API_URL = 'http://10.110.12.39:3000/api';
+const API_URL = 'http://10.110.12.22:3000/api';
 
 export default function HomeScreen() {
   const [tasks, setTasks] = useState([]);

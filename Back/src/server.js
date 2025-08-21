@@ -10,11 +10,8 @@ app.use(cors());
 app.use(express.json());
 
 // Simulação de um banco de dados em memória
-let tasks = [
-    { id: 1, title: 'Estudar Node.js', completed: false },
-    { id: 2, title: 'Fazer o projeto de PPDM', completed: true },
-];
-let nextId = 3;
+let tasks = []; // Array de tarefas agora inicia vazio
+let nextId = 1; // O ID deve começar a partir de 1, já que não há tarefas pré-existentes
 
 // Rotas da API
 // GET /api/tasks: Lista todas as tarefas

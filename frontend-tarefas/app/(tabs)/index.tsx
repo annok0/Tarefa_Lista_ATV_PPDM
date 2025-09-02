@@ -5,11 +5,14 @@ import { StyleSheet, Text, View, TextInput, Button, FlatList, TouchableOpacity, 
 import axios from 'axios';
 
 // A URL base da API do seu colega
-const API_URL = 'http://10.110.12.39:3000/api';
+const API_URL = 'http://10.110.12.54:3000/api';
 
 export default function HomeScreen() {
   const [tasks, setTasks] = useState([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
+
+  const [editingTaskId, setEditingTaskId] = useState(null); 
+  const [editingTaskTitle, setEditingTaskTitle] = useState(''); 
 
   // --- Funções do CRUD ---
 
@@ -44,6 +47,31 @@ export default function HomeScreen() {
       fetchTasks();
     } catch (error) {
       console.error("Erro ao deletar tarefa:", error);
+    }
+  };
+
+  const handleStartEdit = (task) => {
+    setEditingTaskId(task.id);       // Define o ID da tarefa que estamos editando
+    setEditingTaskTitle(task.title); // Preenche o input de edição com o título atual
+  };
+
+  const handleSaveEdit = async () => {
+    if (editingTaskTitle.trim() === '') return; // Não salvar se o título estiver vazio
+
+    try {
+      // Requisição PUT para o backend com o novo título
+      await axios.put(`${API_URL}/tasks/${editingTaskId}`, {
+        title: editingTaskTitle,
+      });
+
+      // Limpa os estados de edição
+      setEditingTaskId(null);
+      setEditingTaskTitle('');
+
+      fetchTasks(); // Atualiza a lista de tarefas na tela
+    } catch (error) {
+      console.error("Erro ao salvar edição:", error);
+      Alert.alert("Erro", "Não foi possível salvar a alteração.");
     }
   };
 
@@ -82,18 +110,38 @@ export default function HomeScreen() {
         data={tasks}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => handleToggleTask(item)}>
+          // Se o ID do item for o mesmo que está em edição...
+          item.id === editingTaskId ? (
+            // --- MODO DE EDIÇÃO ---
             <View style={styles.taskItem}>
-              {/* **MUDANÇA IMPORTANTE AQUI** */}
-              {/* Verificamos a propriedade 'item.completed' */}
-              <Text style={[styles.taskText, item.completed && styles.taskTextDone]}>
-                {item.title}
-              </Text>
-              <TouchableOpacity onPress={() => handleDeleteTask(item.id)} style={styles.deleteButton}>
-                  <Text style={styles.deleteButtonText}>X</Text>
-              </TouchableOpacity>
+              <TextInput
+                style={styles.input} // Reutilizamos o estilo do input de adicionar
+                value={editingTaskTitle}
+                onChangeText={setEditingTaskTitle}
+                autoFocus={true} // Foca no input automaticamente
+              />
+              <Button title="Salvar" onPress={handleSaveEdit} />
             </View>
-          </TouchableOpacity>
+          ) : (
+            // --- MODO DE VISUALIZAÇÃO (NORMAL) ---
+            <TouchableOpacity onPress={() => handleToggleTask(item)}>
+              <View style={styles.taskItem}>
+                <Text style={[styles.taskText, item.completed && styles.taskTextDone]}>
+                  {item.title}
+                </Text>
+                <View style={styles.buttonsContainer}>
+                  {/* BOTÃO DE EDITAR */}
+                  <TouchableOpacity onPress={() => handleStartEdit(item)} style={styles.editButton}>
+                      <Text style={styles.editButtonText}>Editar</Text>
+                  </TouchableOpacity>
+                  {/* BOTÃO DE DELETAR */}
+                  <TouchableOpacity onPress={() => handleDeleteTask(item.id)} style={styles.deleteButton}>
+                      <Text style={styles.deleteButtonText}>X</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </TouchableOpacity>
+          )
         )}
       />
     </SafeAreaView>
@@ -107,13 +155,53 @@ const styles = StyleSheet.create({
     inputContainer: { flexDirection: 'row', marginBottom: 20 },
     input: { flex: 1, borderWidth: 1, borderColor: '#ccc', padding: 10, marginRight: 10, borderRadius: 5, backgroundColor: '#fff' },
     taskItem: { backgroundColor: '#fff', padding: 15, borderRadius: 5, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10, elevation: 2 },
+    
+    // --- MODIFICADO ---
+    // Adicionamos flex: 1 para que o texto ocupe o espaço disponível
+    // e empurre os botões para a direita, evitando que texto longo quebre o layout.
     taskText: {
       fontSize: 16,
+      flex: 1, 
+      marginRight: 10, // Adiciona um pequeno espaço antes dos botões
     },
+
     taskTextDone: {
       textDecorationLine: 'line-through',
       color: '#aaa'
     },
-    deleteButton: { backgroundColor: 'red', paddingHorizontal: 12, paddingVertical: 5, borderRadius: 5 },
-    deleteButtonText: { color: 'white', fontWeight: 'bold' }
+    
+    // --- NOVO ---
+    // Contêiner para alinhar os botões lado a lado
+    buttonsContainer: {
+      flexDirection: 'row',
+    },
+
+    // --- NOVO ---
+    // Estilo para o novo botão de editar
+    editButton: { 
+      backgroundColor: 'orange', // Cor diferente para distinguir da exclusão
+      paddingHorizontal: 12, 
+      paddingVertical: 5, 
+      borderRadius: 5,
+      marginRight: 10, // Espaçamento entre o botão de editar e o de deletar
+    },
+    
+    // --- NOVO ---
+    // Estilo para o texto do botão de editar
+    editButtonText: { 
+      color: 'white', 
+      fontWeight: 'bold' 
+    },
+
+    // Botão de deletar (inalterado)
+    deleteButton: { 
+      backgroundColor: 'red', 
+      paddingHorizontal: 12, 
+      paddingVertical: 5, 
+      borderRadius: 5 
+    },
+    deleteButtonText: { 
+      color: 'white', 
+      fontWeight: 'bold' 
+    }
 });

@@ -1,9 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = 3000;
-
-// Middleware para habilitar o CORS
+const port = process.env.PORT || 3000; // Usa a porta do Render ou 3000 como padrão Middleware para habilitar o CORS
 app.use(cors());
 
 // Middleware para que o Express entenda JSON
@@ -59,5 +57,5 @@ app.delete('/api/tasks/:id', (req, res) => {
 
 // Inicia o servidor
 app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
+  console.log(`Servidor rodando na porta ${port}`);
 });

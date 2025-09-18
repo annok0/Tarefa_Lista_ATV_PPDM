@@ -2,7 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000; // Usa a porta do Render ou 3000 como padrão Middleware para habilitar o CORS
-app.use(cors());
+
+app.use(cors({
+  origin: '*', // Permite qualquer origem
+  methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'], // Permite todos os métodos que você usa
+  allowedHeaders: ['Content-Type', 'Authorization'], // Permite os cabeçalhos comuns
+}));
 
 // Middleware para que o Express entenda JSON
 app.use(express.json());

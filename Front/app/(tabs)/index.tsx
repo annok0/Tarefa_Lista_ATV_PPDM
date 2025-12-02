@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
-    color: '#fff'
   },
   taskContainer: {
     flexDirection: 'row',
@@ -93,6 +92,9 @@ const styles = StyleSheet.create({
     borderBottomColor: 'gray',
   },
   deleteButton: {
-    color: 'red',
+    color: 'white',
+    backgroundColor:'red',
+    padding: 7,
+    borderRadius: 5,
   },
 });
